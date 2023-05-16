@@ -1,0 +1,4 @@
+com\roy\scrocket\controller\MQTestController.class
+com\roy\scrocket\basic\ScConsumer.class
+com\roy\scrocket\ScRocketMQApplication.class
+com\roy\scrocket\basic\ScProducer.class

@@ -1,0 +1,10 @@
+E:\a-work\RocketMQ\VIP课程\配套资料\rocketMQ-demo\SpringBoot-rocketmq\src\main\java\com\roy\rocketmq\config\ExtRocketMQTemplate.java
+E:\a-work\RocketMQ\VIP课程\配套资料\rocketMQ-demo\SpringBoot-rocketmq\src\main\java\com\roy\rocketmq\domain\OrderPaidEvent.java
+E:\a-work\RocketMQ\VIP课程\配套资料\rocketMQ-demo\SpringBoot-rocketmq\src\main\java\com\roy\rocketmq\RocketMQSBApplication.java
+E:\a-work\RocketMQ\VIP课程\配套资料\rocketMQ-demo\SpringBoot-rocketmq\src\main\java\com\roy\rocketmq\domain\User.java
+E:\a-work\RocketMQ\VIP课程\配套资料\rocketMQ-demo\SpringBoot-rocketmq\src\main\java\com\roy\rocketmq\domain\ProductWithPayload.java
+E:\a-work\RocketMQ\VIP课程\配套资料\rocketMQ-demo\SpringBoot-rocketmq\src\main\java\com\roy\rocketmq\config\MyTransactionImpl.java
+E:\a-work\RocketMQ\VIP课程\配套资料\rocketMQ-demo\SpringBoot-rocketmq\src\main\java\com\roy\rocketmq\basic\SpringProducer.java
+E:\a-work\RocketMQ\VIP课程\配套资料\rocketMQ-demo\SpringBoot-rocketmq\src\main\java\com\roy\rocketmq\config\Swagger2.java
+E:\a-work\RocketMQ\VIP课程\配套资料\rocketMQ-demo\SpringBoot-rocketmq\src\main\java\com\roy\rocketmq\basic\SpringConsumer.java
+E:\a-work\RocketMQ\VIP课程\配套资料\rocketMQ-demo\SpringBoot-rocketmq\src\main\java\com\roy\rocketmq\controller\MQTestController.java

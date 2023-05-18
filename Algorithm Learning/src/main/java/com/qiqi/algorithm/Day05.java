@@ -48,8 +48,5 @@ public class Day05 {
    }
 
 
-    public List<TreeNode> generateTrees(int n) {
-        List<TreeNode> list = new LinkedList<>();
 
-    }
 }

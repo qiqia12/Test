@@ -1,8 +1,6 @@
 package com.qiqi.algorithm;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.*;
 
 /**
  * @projectName: Test
@@ -116,4 +114,34 @@ public class Day11 {
         }
         return new int[]{m,n};
     }
+
+
+    private double ans;
+
+    public double frogPosition(int n, int[][] edges, int t, int target) {
+        List<Integer>[] g = new ArrayList[n + 1];
+        Arrays.setAll(g, e -> new ArrayList<>());
+        g[1].add(0); // 减少额外判断的小技巧
+        for (int[] e : edges) {
+            int x = e[0], y = e[1];
+            g[x].add(y);
+            g[y].add(x); // 建树
+        }
+        dfs(g, target, 1, 0, t, 1);
+        return ans;
+    }
+
+    private boolean dfs(List<Integer>[] g, int target, int x, int fa, int leftT, long prod) {
+        // t 秒后必须在 target（恰好到达，或者 target 是叶子停在原地）
+        if (x == target && (leftT == 0 || g[x].size() == 1)) {
+            ans = 1.0 / prod;
+            return true;
+        }
+        if (x == target || leftT == 0) return false;
+        for (int y : g[x])  // 遍历 x 的儿子 y
+            if (y != fa && dfs(g, target, y, x, leftT - 1, prod * (g[x].size() - 1)))
+                return true; // 找到 target 就不再递归了
+        return false; // 未找到 target
+    }
+
 }

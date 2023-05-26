@@ -144,17 +144,17 @@ public class Day11 {
         return false; // 未找到 target
     }
     public String oddString(String[] words) {
-        var d = new HashMap<String, List<String>>();
-        for (var s : words) {
+        HashMap<String,List<String>> d = new HashMap<String, List<String>>();
+        for (String s : words) {
             int m = s.length();
-            var cs = new char[m - 1];
+            char[] cs = new char[m - 1];
             for (int i = 0; i < m - 1; ++i) {
                 cs[i] = (char) (s.charAt(i + 1) - s.charAt(i));
             }
-            var t = String.valueOf(cs);
+            String t = String.valueOf(cs);
             d.computeIfAbsent(t, k -> new ArrayList<>()).add(s);
         }
-        for (var ss : d.values()) {
+        for (List<String> ss : d.values()) {
             if (ss.size() == 1) {
                 return ss.get(0);
             }
@@ -164,4 +164,3 @@ public class Day11 {
     }
 }
 
-}

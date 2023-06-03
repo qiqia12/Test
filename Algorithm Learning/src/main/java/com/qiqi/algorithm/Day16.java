@@ -142,7 +142,7 @@ public class Day16 {
 
     class Solution {
         public int[] vowelStrings(String[] words, int[][] queries) {
-            Set<Character> vowels = Set.of('a', 'e', 'i', 'o', 'u');
+            Set<Character> vowels = new HashSet<>();
             int n = words.length;
             int[] s = new int[n + 1];
             for (int i = 0; i < n; ++i) {

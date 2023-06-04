@@ -3,178 +3,73 @@ package com.qiqi.algorithm;
 import java.util.*;
 
 public class Main {
-    static int[][] next;
-    static ArrayList<Integer>[] lists;
-    static int [][] arr;
-    public static void main1(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int m = sc.nextInt();
-        lists = new ArrayList[n+1];
-        Arrays.setAll(lists,e->new ArrayList<>());
-        arr = new int[m+1][m+1];
-        next = new int[n+1][n+1];
-        for (int i = 0; i < m; i++) {
-            int a = sc.nextInt();
-            int b = sc.nextInt();
-            int dis = sc.nextInt();
-            arr[a][b] = dis;
-            arr[b][a] = dis;
-            lists[a].add(b);
-            lists[b].add(a);
-        }
-        int q = sc.nextInt();
-        int[][] dp = new int[q][2];
-        for (int i = 0; i < q; i++) {
-            dp[i][0] = sc.nextInt();
-            dp[i][1] = sc.nextInt();
-        }
-
-        HashSet<Integer> set = new HashSet<>();
-        for (int i = 0; i < q; i++) {
-            int start = dp[i][0] , end = dp[i][1];
-            if (next[start][end] != 0){
-                System.out.println(next[start][end]);
-                continue;
-            }
-            List<Integer> list = new LinkedList<>();
-            int result = 0;
-            set.add(start);
-            for (Integer integer : lists[start]) {
-                set.add(integer);
-                result = dsf(integer,end,set);
-                list.add(Math.min(result,arr[start][integer]));
-                set.remove(integer);
-            }
-            Integer integer = list.stream().max(Integer::compareTo).orElse(-1);
-            next[start][end] = integer;
-            System.out.println(integer);
-        }
-
-    }
-
-    private static int dsf(Integer start, int end, HashSet<Integer> set) {
-        if (next[start][end] != 0){
-            return next[start][end];
-        }
-        if (start == end) return 10000;
-        List<Integer> list = new LinkedList<>();
-        for (Integer integer : lists[start]) {
-            if (!set.contains(integer)){
-                set.add(integer);
-                if (integer == end){
-                    return arr[start][integer];
-                }
-                int num = dsf(integer,end,set);
-                list.add(Math.min(num,arr[start][integer]));
-                set.remove(integer);
-            }
-        }
-        int result = list.stream().max(Comparator.comparing(x->x)).orElse(-1);
-        next[start][end] = result;
-        return result;
-    }
-
-    public int maxRepOpt1(String text) {
-        int[] cnt = new int[26];
-        int n = text.length();
-        for (char c : text.toCharArray()) {
-            cnt[c-'a']++;
-        }
-        int ans = 0, i = 0;
-        while (i < n) {
-            int j = i;
-            while (j < n && text.charAt(j) == text.charAt(i)) {
-                ++j;
-            }
-            int l = j - i;
-            int k = j + 1;
-            while (k < n && text.charAt(k) == text.charAt(i)) {
-                ++k;
-            }
-            int r = k - j - 1;
-            ans = Math.max(ans, Math.min(l + r + 1, cnt[text.charAt(i) - 'a']));
-            i = j;
-        }
-        return ans;
-    }
-    //零钱兑换
-    public int coinChange(int[] coins, int amount) {
-        int[] dp = new int[amount+1];
-        Arrays.fill(dp,amount+1);
-        for (int coin : coins) {
-            if (coin<=amount){
-                dp[coin] = 1;
-            }
-        }
-        dp[0] = 0;
-        for (int i = 1; i <= amount; i++) {
-            for (int coin : coins) {
-                if (i>coin){
-                    dp[i] = Math.min(dp[i],dp[i-coin]+1);
-                }
-            }
-        }
-
-        return dp[amount]>=amount+1?-1:dp[amount];
-
-    }
-    public static int countGoodStrings(int low, int high, int zero, int one) {
-        int MOD = (int) 1e9+7;
-        int[] dp = new int[high+1];
-        dp[zero] =dp[zero] + 1;
-        dp[one] = dp[one] + 1;
-        for (int i = 1; i <= high; i++) {
-            if (i>zero){
-                dp[i] += dp[i-zero]%MOD;
-            }
-            if (i>one){
-                dp[i] +=dp[i-one]%MOD;
-            }
-        }
-        int result = 0;
-        for (int i = low; i <= high; i++) {
-            result = (result + dp[i]) % MOD;
-        }
-        return result;
-
-
-        int MOD = (int) 1e9 + 7;
-        int[] f = new int[high + 1];
-        f[0] = 1;
-        for (int i = 1; i <= high; i++) {
-            int a = i >= zero ? f[i - zero] : 0, b = i >= one ? f[i - one] : 0;
-            f[i] = (a + b) % MOD;
-        }
-        int res = 0;
-        for (int i = low; i <= high; i++) {
-            res = (res + f[i]) % MOD;
-        }
-        return res;
-    }
-
+    static List<int[]> res;
     public static void main(String[] args) {
-        countGoodStrings(3,3,1,1);
+        Scanner sc = new Scanner(System.in);
+        int end = sc.nextInt();
+        res = new LinkedList<>();
+        int start = 1;
+        dfs(start,end,0);
+        System.out.println(res.size());
+        for (int i = 0; i < res.size(); i++) {
+            int[] ints = res.get(i);
+            System.out.println(ints[0]+" "+ints[1]+" "+ints[2]);
+        }
+
     }
 
-    public int numDecodings(String s) {
-        if (s.startsWith("0")) return 0;
-        int len = s.length();
-        int[] dp = new int[len+1];
-        dp[0] = 1;
-        s = " "+s;
-        for (int i = 1; i <= len; i++) {
-            int a = s.charAt(i)-'0';
-            int b = (s.charAt(i-1)-'0')*10+a;
-            if (a>=1 && a<=9){
-                dp[i] = dp[i-1];
-            }
-            if (b>=10 && b<= 26){
-                dp[i] += dp[i-2];
+    private static void dfs(int start, int end,int index) {
+        if (start == end) return;
+        int mid = start +(end-start)/2 ;
+        int[] arr = new int[]{start+index,mid+index,end+index};
+        res.add(arr);
+        //dfs(start,mid,index+mid-1);
+        dfs(start,mid,end/2+index);
+        dfs(mid+1,end,-((end+1)/2));
+    }
+
+    public int distinctAverages(int[] nums) {
+        HashSet<Float> set = new HashSet<>();
+        Arrays.sort(nums);
+        int start = 0,end = nums.length-1;
+        while(start<end){
+            int s = nums[start++];
+            int e = nums[end--];
+            float res = (s+e)/2f;
+            set.add(res);
+
+        }
+        return set.size();
+    }
+    //最低票价
+    public int mincostTickets(int[] days, int[] costs) {
+        int len = days.length;
+        int max = days[len-1];
+        int min = days[0];
+        int[] dp = new int[max + 31];
+
+        for (int i = max,index = len-1 ; i >=0; i--) {
+            if (i == days[index]){
+                index--;
+                dp[i] = Math.min(costs[0]+dp[i+1],Math.min(costs[1]+dp[i+7],costs[2]+dp[i+30]));
+            }else{
+                dp[i] = dp[i+1];
             }
         }
-        return dp[len];
+        return dp[min];
     }
 
-
+    public int numTilings(int n) {
+        if (n == 1) return 1;
+        int[] dp = new int[n+1];
+        dp[1] = 1;
+        dp[2] = 2;
+        for (int i = 3; i <=n; i++) {
+            dp[i] = dp[i-1]+dp[i-2]+2;
+            for (int j = i-3; j >=1 ; j++) {
+                dp[i]+=2*dp[j];
+            }
+        }
+        return dp[n];
+    }
 }

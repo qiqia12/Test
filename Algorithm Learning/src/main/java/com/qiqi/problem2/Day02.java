@@ -1,6 +1,10 @@
 package com.qiqi.problem2;
 
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.StreamTokenizer;
 import java.util.*;
 
 public class Day02 {
@@ -26,37 +30,97 @@ public class Day02 {
             this.num = n;
         }
     }
+    static final int N = 1010;
+    static int[][] gra = new int[N][N];
+    static int[] dist = new int[N];
+    static int[] g = new int[N];
+    static boolean[] st = new boolean[N];
+    static int n, m;
+    public static void main1(String[] args) {
+        Scanner sc = new Scanner(System.in);
+        n = sc.nextInt();
+        m = sc.nextInt();
+        for (int i = 1; i <= n; ++i) {
+            g[i] = sc.nextInt();
+        }
+        g[n] = 0;
+        for (int[] row : gra) {
+            Arrays.fill(row, 0x3f3f3f);
+        }
+        for (int i = 1; i <= m; ++i) {
+            int u = sc.nextInt();
+            int v = sc.nextInt();
+            int c = sc.nextInt();
+            gra[u][v] = g[v] + c;
+            gra[v][u] = g[u] + c;
+        }
+        System.out.println(dijkstra());
 
+    }
+    static int dijkstra() {
+        Arrays.fill(dist, 0x3f3f3f);
+        dist[1] = 0;
+
+        for (int i = 0; i < n - 1; ++i) {
+            int t = -1;
+            for (int j = 1; j <= n; ++j) {
+                if (!st[j] && (t == -1 || dist[t] > dist[j])) {
+                    t = j;
+                }
+            }
+            st[t] = true;
+            for (int j = 1; j <= n; ++j) {
+                dist[j] = Math.min(dist[j], dist[t] + gra[t][j]);
+            }
+        }
+        return dist[n];
+    }
+
+
+    static int[][] dp ;
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
         int n = sc.nextInt();
         int m = sc.nextInt();
-        int[]dp = new int[n+1];
+        dp = new int[n+1][n+1];
+        int[][] edge = new int[n+1][n+1];
+        int [] days = new int[n+1];
         for (int i = 1; i <= n; i++) {
-            dp[i] = sc.nextInt();
+            days[i] = sc.nextInt();
         }
-        dp[n] = 0;
-        int[][] arr = new int[n+1][n+1];
-        ArrayList<Integer>[] list = new ArrayList[n+1];
-        Arrays.setAll(list ,e->new ArrayList<>());
+        days[n] =0;
+        HashMap<Integer,List<Integer>> map = new HashMap<>();
+        for (int i = 1; i <= n ; i++) {
+            map.put(i,new LinkedList<>());
+        }
         for (int i = 0; i < m; i++) {
             int a = sc.nextInt();
             int b = sc.nextInt();
             int dis = sc.nextInt();
-            list[a].add(b);
-            list[b].add(a);
-            arr[a][b] = dis+dp[b];
-            arr[b][a] = dis+dp[a];
+            List<Integer> aList = map.get(a);
+            aList.add(b);
+            List<Integer> bList = map.get(b);
+            bList.add(a);
+            edge[a][b] = dis+days[b];
+            edge[b][a] = dis+days[a];
         }
-        HashSet<Integer> set = new HashSet<>();
-        set.add(1);
-        System.out.println(dfs(1, n,set));
-        sc.close();
-
+        System.out.println(djtsl(1, n, edge, new HashSet<Integer>(),map));
     }
 
-    private static int dfs(int start, int end,HashSet<Integer> set) {
+    private static int djtsl(int start, int end, int[][] edge, HashSet<Integer> set,HashMap<Integer,List<Integer>> map) {
         if (start == end) return 0;
+        if (dp[start][end]!=0) return dp[start][end];
+        List<Integer> list = map.get(start);
+        set.add(start);
+        int result = 100001;
+        for (Integer i : list) {
+            if (set.add(i)){
+                result = Math.min(result,edge[start][i] + djtsl(i,end,edge,set,map));
+                set.remove(i);
+            }
+        }
+        dp[start][end] = result;
+        return result;
     }
 
 

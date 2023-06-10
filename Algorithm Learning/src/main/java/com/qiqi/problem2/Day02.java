@@ -77,50 +77,48 @@ public class Day02 {
     }
 
 
-    static int[][] dp ;
     public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int n = sc.nextInt();
-        int m = sc.nextInt();
-        dp = new int[n+1][n+1];
-        int[][] edge = new int[n+1][n+1];
-        int [] days = new int[n+1];
-        for (int i = 1; i <= n; i++) {
-            days[i] = sc.nextInt();
-        }
-        days[n] =0;
-        HashMap<Integer,List<Integer>> map = new HashMap<>();
-        for (int i = 1; i <= n ; i++) {
-            map.put(i,new LinkedList<>());
-        }
-        for (int i = 0; i < m; i++) {
-            int a = sc.nextInt();
-            int b = sc.nextInt();
-            int dis = sc.nextInt();
-            List<Integer> aList = map.get(a);
-            aList.add(b);
-            List<Integer> bList = map.get(b);
-            bList.add(a);
-            edge[a][b] = dis+days[b];
-            edge[b][a] = dis+days[a];
-        }
-        System.out.println(djtsl(1, n, edge, new HashSet<Integer>(),map));
+        System.out.println(Arrays.toString(numSmallerByFrequency(new String[]{"aabbabbb","abbbabaa","aabbbabaa","aabba","abb","a","ba","aa","ba","baabbbaaaa","babaa","bbbbabaa"}, new String[]{"b","aaaba","aaaabba","aa","aabaabab","aabbaaabbb","ababb","bbb","aabbbabb","aab","bbaaababba","baaaaa"})));
     }
 
-    private static int djtsl(int start, int end, int[][] edge, HashSet<Integer> set,HashMap<Integer,List<Integer>> map) {
-        if (start == end) return 0;
-        if (dp[start][end]!=0) return dp[start][end];
-        List<Integer> list = map.get(start);
-        set.add(start);
-        int result = 100001;
-        for (Integer i : list) {
-            if (set.add(i)){
-                result = Math.min(result,edge[start][i] + djtsl(i,end,edge,set,map));
-                set.remove(i);
+    public static int[] numSmallerByFrequency(String[] queries, String[] words) {
+        int length = queries.length;
+        int[] res = new int[length];
+        int len = words.length;
+        int[] w = new int[len];
+        for (int i = 0; i < len; i++) {
+            w[i] = f(words[i]);
+        }
+        Arrays.sort(w);
+        for (int i = 0; i < length; i++) {
+            int num = f(queries[i]);
+            int left =0,right = len;
+            while(left<right){
+                int mid = left +(right - left)/2;
+                if (w[mid]<=num){
+                    left = mid+1;
+                }else{
+                    right = mid;
+                }
+            }
+            res[i] = len- left;
+        }
+        return res;
+    }
+
+    private static int f(String word) {
+        int [] res = new int[26];
+        for (char c : word.toCharArray()) {
+            res[c-'a']++;
+        }
+        int result =0;
+        for (int i = 0; i < 26; i++) {
+            if (res[i]!=0){
+                result = res[i];
+                break;
             }
         }
-        dp[start][end] = result;
-        return result;
+        return  result;
     }
 
 

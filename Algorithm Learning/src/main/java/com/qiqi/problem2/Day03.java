@@ -1,6 +1,9 @@
 package com.qiqi.problem2;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Locale;
 
 /**
  * @projectName: Test
@@ -11,7 +14,7 @@ import java.util.Arrays;
  * @date: 2023/6/11 20:13
  * @version: 1.0
  */
-public class Day03 {
+public class Day03  {
     public static  class ListNode {
        int val;
        ListNode next;
@@ -21,7 +24,8 @@ public class Day03 {
    }
 
     public static void main(String[] args) {
-        distributeCandies(10,3);
+        String s1 = new String("123123");
+
     }
     public static ListNode removeZeroSumSublists(ListNode head) {
         ListNode H = new ListNode();
@@ -105,6 +109,25 @@ public class Day03 {
 
             }
             return node;
+        }
+        public int unequalTriplets(int[] nums) {
+            HashMap<Integer,Integer> map = new HashMap<>();
+            for (int num : nums) {
+                int n = map.getOrDefault(num,0)+1;
+                map.put(num,n);
+            }
+            if (map.size()<3)return 0;
+            int reslut = 0;
+            int a = 0;
+            int n = nums.length;
+            for (Integer b : map.values()) {
+                int c = n - a - b;
+
+                reslut += a * b * c;
+
+                a += b;
+            }
+            return reslut;
         }
     }
 }

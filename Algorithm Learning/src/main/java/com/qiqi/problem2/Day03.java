@@ -1,9 +1,6 @@
 package com.qiqi.problem2;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Locale;
+import java.util.*;
 
 /**
  * @projectName: Test
@@ -23,10 +20,6 @@ public class Day03  {
        ListNode(int val, ListNode next) { this.val = val; this.next = next; }
    }
 
-    public static void main(String[] args) {
-        String s1 = new String("123123");
-
-    }
     public static ListNode removeZeroSumSublists(ListNode head) {
         ListNode H = new ListNode();
         ListNode h = H;
@@ -129,5 +122,34 @@ public class Day03  {
             }
             return reslut;
         }
+    }
+    public static int numTimesAllBlue(int[] flips) {
+        int[] dp = new int[flips.length+1];
+        dp[0] =1;
+        int low = 0;
+        int result = 0;
+        int max = 0;
+        for (int flip : flips) {
+            dp[flip] = 1;
+            while(low < flips.length-1 && dp[low+1] ==1){
+                low++;
+            }
+            max = Math.max(max,flip);
+            if (max == low){
+                result++;
+            }
+        }
+        while(low < flips.length && dp[low]==1){
+            low++;
+        }
+        if (max == low){
+            result++;
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        System.out.println(numTimesAllBlue(new int[]{1, 2, 3, 4, 5, 6, 7}));
+        System.out.println(numTimesAllBlue(new int[]{3, 2, 4, 1, 5}));
     }
 }

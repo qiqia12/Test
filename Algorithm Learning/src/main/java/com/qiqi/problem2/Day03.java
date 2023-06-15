@@ -152,4 +152,42 @@ public class Day03  {
         System.out.println(numTimesAllBlue(new int[]{1, 2, 3, 4, 5, 6, 7}));
         System.out.println(numTimesAllBlue(new int[]{3, 2, 4, 1, 5}));
     }
+    public List<Boolean> canMakePaliQueries(String s, int[][] queries) {
+        List<Boolean> result = new LinkedList<>();
+        for (int i = 0; i < queries.length; i++) {
+            result.add(process(s,queries[i]));
+        }
+        return result;
+    }
+
+    private Boolean process(String s, int[] query) {
+        int start = query[0];
+        int end = query[1];
+        int k = query[2];
+        String str = s.substring(start,end+1);
+        int[] arr = new int[26];
+        for (char c : str.toCharArray()) {
+            arr[c-'a']++;
+        }
+
+        int result = 0;
+        for (int i = 0; i < 26; i++) {
+            result += arr[i]%2==1? arr[i]-1:arr[i];
+        }
+        if (str.length()%2 ==1){
+            return (str.length() -1 - result) /2 <= k;
+        }
+        return (str.length() - result) /2 <= k;
+
+    }
+
+    public List<Boolean> canMakePaliQueries1(String s, int[][] queries) {
+        int length = s.length();
+        int[][] dp = new int[length+1][length+1];
+        for (int i = 1; i <= length; i++) {
+            for (int j = i+1; j <=length; j++) {
+                dp[i][j] = Math.min(s.charAt(j) == s.charAt(i))
+            }
+        }
+    }
 }

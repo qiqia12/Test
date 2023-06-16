@@ -181,13 +181,7 @@ public class Day03  {
 
     }
 
-    public List<Boolean> canMakePaliQueries1(String s, int[][] queries) {
-        int length = s.length();
-        int[][] dp = new int[length+1][length+1];
-        for (int i = 1; i <= length; i++) {
-            for (int j = i+1; j <=length; j++) {
-                dp[i][j] = Math.min(s.charAt(j) == s.charAt(i))
-            }
-        }
+    public int minNumberOfSemesters(int n, int[][] relations, int k) {
+
     }
 }

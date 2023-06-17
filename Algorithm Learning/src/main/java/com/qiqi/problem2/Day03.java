@@ -1,5 +1,6 @@
 package com.qiqi.problem2;
 
+import java.math.BigInteger;
 import java.util.*;
 
 /**
@@ -181,7 +182,10 @@ public class Day03  {
 
     }
 
-    public int minNumberOfSemesters(int n, int[][] relations, int k) {
-
+    public int numberOfCuts(int n) {
+        StringBuilder sb = new StringBuilder();
+        BigInteger bi = new BigInteger(12);
+        if (n == 1) return 0;
+        return n%2==1?n:n/2;
     }
 }

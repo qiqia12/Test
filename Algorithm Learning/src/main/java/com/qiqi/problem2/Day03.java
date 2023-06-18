@@ -2,6 +2,7 @@ package com.qiqi.problem2;
 
 import java.math.BigInteger;
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * @projectName: Test
@@ -184,7 +185,7 @@ public class Day03  {
 
     public int numberOfCuts(int n) {
         StringBuilder sb = new StringBuilder();
-        BigInteger bi = new BigInteger(12);
+        CopyOnWriteArrayList<Integer> list = new CopyOnWriteArrayList<>();
         if (n == 1) return 0;
         return n%2==1?n:n/2;
     }

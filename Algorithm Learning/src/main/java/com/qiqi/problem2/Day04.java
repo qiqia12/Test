@@ -1,5 +1,9 @@
 package com.qiqi.problem2;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.stream.Collectors;
+
 /**
  * @projectName: Test
  * @package: com.qiqi.problem2
@@ -61,7 +65,30 @@ public class Day04 {
 
         return f[n][0];
     }
+    public int[] pondSizes(int[][] land) {
+        LinkedList<Integer> list = new LinkedList<>();
+        for (int i = 0; i < land.length; i++) {
+            for (int j = 0; j < land[0].length; j++) {
+                if (land[i][j] == 0){
+                    list.add(process(land,i,j));
+                }
+            }
+        }
+        int[] res = new int[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            res[i] = list.get(i);
+        }
+        Arrays.sort(res);
+        return res;
+    }
 
+    private int process(int[][] land, int i, int j) {
+        if (i<0 || i>land.length-1 || j<0 || j>land[0].length) return 0;
+        if (land[i][j]!=0) return 0;
+        land[i][j] = 1;
+        return 1+process(land,i-1,j)+process(land, i+1, j)+process(land, i, j-1)+process(land, i, j+1)
+                +process(land,i-1,j+1)+process(land, i+1, j-1)+process(land, i+1, j+1)+process(land, i-1, j-1);
+    }
 
 
 }

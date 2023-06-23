@@ -89,6 +89,19 @@ public class Day04 {
         return 1+process(land,i-1,j)+process(land, i+1, j)+process(land, i, j-1)+process(land, i, j+1)
                 +process(land,i-1,j+1)+process(land, i+1, j-1)+process(land, i+1, j+1)+process(land, i-1, j-1);
     }
+    public int maximumValue(String[] strs) {
+        int result = 0;
+        for (String str : strs) {
+            int num = 0;
+            try{
+                 num = Integer.parseInt(str);
+            }catch (Exception e){
+                num = str.length();
+            }
+            result = Math.max(num,result);
+        }
+        return result;
+    }
 
 
 }

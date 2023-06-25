@@ -227,4 +227,24 @@ public class Day04 {
     }
 
 
+    public static boolean checkOverlap(int radius, int xCenter, int yCenter, int x1, int y1, int x2, int y2) {
+        for (int i = x1; i <= x2; i++) {
+            for (int j = y1; j <= y2; j++) {
+                if (pro(radius,xCenter,yCenter,i,j)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private static boolean pro(int radius, int xCenter, int yCenter, int i, int j) {
+
+        return radius > Math.sqrt(Math.pow(Math.abs(xCenter-i),2)+Math.pow(Math.abs(yCenter-j),2));
+    }
+
+    public static void main(String[] args) {
+        checkOverlap(1,0,0,1,-1,3,1);
+    }
+
 }

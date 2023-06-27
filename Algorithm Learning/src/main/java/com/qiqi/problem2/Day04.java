@@ -244,7 +244,23 @@ public class Day04 {
     }
 
     public static void main(String[] args) {
-        checkOverlap(1,0,0,1,-1,3,1);
+        maximumSum(new int[]{1,-2,0,3});
+    }
+    public static int maximumSum(int[] arr) {
+        int ans = Integer.MIN_VALUE / 2, f0 = ans, f1 = ans;
+
+        for (int x : arr) {
+
+            f1 = Math.max(f1 + x, f0);
+
+            f0 = Math.max(f0, 0) + x;
+
+            ans = Math.max(ans, Math.max(f0, f1));
+
+        }
+
+        return ans;
+
     }
 
 }

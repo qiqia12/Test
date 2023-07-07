@@ -243,9 +243,6 @@ public class Day04 {
         return radius > Math.sqrt(Math.pow(Math.abs(xCenter-i),2)+Math.pow(Math.abs(yCenter-j),2));
     }
 
-    public static void main(String[] args) {
-        maximumSum(new int[]{1,-2,0,3});
-    }
     public static int maximumSum(int[] arr) {
         int ans = Integer.MIN_VALUE / 2, f0 = ans, f1 = ans;
 
@@ -262,104 +259,95 @@ public class Day04 {
         return ans;
 
     }
-    public int minimumIncompatibility(int[] nums, int k) {
-        int n = nums.length;
+    public static  void sort(int[] arr){
+        if (arr==null || arr.length<2){
+            return;
+        }
+        proc1(arr,0,arr.length-1);
+    }
 
-        int m = n / k;
+    private static void proc1(int[] arr, int start, int end) {
+        if (start == end) return;
+        int mid = start + (end - start) /2;
+        proc1(arr,start,mid);
+        proc1(arr,mid+1,end);
+        merge(arr,start,mid,end);
+    }
 
-        int[] g = new int[1 << n];
+    private static void merge(int[] arr, int start, int mid, int end) {
+        int[] help = new int[end - start+1];
+        int i = 0;
+        int left = start;
+        int right = mid+1;
+        while(left <= mid && right <= end){
+            help[i++] = arr[left] < arr[right] ? arr[left++]:arr[right++];
+        }
+        while(left <= mid){
+            help[i++] = arr[left++];
+        }
+        while(right <= end){
+            help[i++] = arr[right++];
+        }
+        for (int j = 0; j < help.length ;j++){
+            arr[start+j] = help[j];
+        }
+    }
 
-        Arrays.fill(g, -1);
-
-        for (int i = 1; i < 1 << n; ++i) {
-
-            if (Integer.bitCount(i) != m) {
-
-                continue;
-
-            }
-
-            Set<Integer> s = new HashSet<>();
-
-            int mi = 20, mx = 0;
-
-            for (int j = 0; j < n; ++j) {
-
-                if ((i >> j & 1) == 1) {
-
-                    if (!s.add(nums[j])) {
-
-                        break;
-
-                    }
-
-                    mi = Math.min(mi, nums[j]);
-
-                    mx = Math.max(mx, nums[j]);
-
-                }
-
-            }
-
-            if (s.size() == m) {
-
-                g[i] = mx - mi;
-
-            }
-
+    public static void main(String[] args) {
+        int [] arr = {12,234,12,345,23,5,2,23,523,4,2342};
+        sort(arr);
+        for (int i : arr) {
+            System.out.print(i);
+            System.out.print(" ");
+        }
+    }
+    public class ListNode {
+      int val;
+      ListNode next;
+      ListNode() {}
+      ListNode(int val) { this.val = val; }
+      ListNode(int val, ListNode next) { this.val = val; this.next = next; }
+  }
+    public ListNode addTwoNumbers(ListNode l1, ListNode l2) {
+        ListNode head = new ListNode();
+        boolean flag = (l1.val + l2.val)/10 > 0;
+        head.val = (l1.val + l2.val)%10;
+        l1 = l1.next;
+        l2 = l2.next;
+        ListNode next = head;
+        while(l1!=null && l2!=null){
+            ListNode cur = new ListNode();
+            cur.val = (flag?1:0) +l1.val + l2.val;
+            flag = cur.val/10 > 0;
+            cur.val = cur.val%10;
+            next.next = cur;
+            next = cur;
+            l1 = l1.next;
+            l2 = l2.next;
+        }
+        while (l1 != null){
+            l1.val += flag?1:0;
+            flag = l1.val/10>0;
+            l1.val = l1.val%10;
+            l1 = l1.next;
         }
 
-        int[] f = new int[1 << n];
 
-        final int inf = 1 << 30;
-
-        Arrays.fill(f, inf);
-
-        f[0] = 0;
-
-        for (int i = 0; i < 1 << n; ++i) {
-
-            if (f[i] == inf) {
-
-                continue;
-
+        if (l2!=null){
+            next.next = l2;
+            while (l2 != null){
+                l2.val += flag?1:0;
+                flag = l2.val/10>0;
+                l2.val = l2.val%10;
+                l2 = l2.next;
             }
-
-            Set<Integer> s = new HashSet<>();
-
-            int mask = 0;
-
-            for (int j = 0; j < n; ++j) {
-
-                if ((i >> j & 1) == 0 && !s.contains(nums[j])) {
-
-                    s.add(nums[j]);
-
-                    mask |= 1 << j;
-
-                }
-
-            }
-
-            if (s.size() < m) {
-
-                continue;
-
-            }
-
-            for (int j = mask; j > 0; j = (j - 1) & mask) {
-
-                if (g[j] != -1) {
-
-                    f[i | j] = Math.min(f[i | j], f[i] + g[j]);
-
-                }
-
-            }
-
         }
+        if (flag){
+            ListNode node = new ListNode(1);
+            next.next = node;
+        }
+        return head;
 
-        return f[(1 << n) - 1] == inf ? -1 : f[(1 << n) - 1];
     }
 
 }

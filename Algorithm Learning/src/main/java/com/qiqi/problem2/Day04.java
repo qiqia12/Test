@@ -2,6 +2,7 @@ package com.qiqi.problem2;
 
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.stream.Collectors;
 
 /**
@@ -293,14 +294,6 @@ public class Day04 {
         }
     }
 
-    public static void main(String[] args) {
-        int [] arr = {12,234,12,345,23,5,2,23,523,4,2342};
-        sort(arr);
-        for (int i : arr) {
-            System.out.print(i);
-            System.out.print(" ");
-        }
-    }
     public class ListNode {
       int val;
       ListNode next;
@@ -348,6 +341,56 @@ public class Day04 {
         }
         return head;
 
+    }
+    public int[] twoSum(int[] numbers, int target) {
+        int left = 0;
+        int right = numbers.length-1;
+        while(numbers[left] + numbers[right] != target && left < right){
+            int flag = numbers[left] + numbers[right]>target?right--:left++;
+
+        }
+        return new int[]{left,right};
+    }
+
+    public static List<String> restoreIpAddresses(String s) {
+        List<String> result = new LinkedList<>();
+        if (s.length()>12||s.length()<4) return result;
+        StringBuilder str = new StringBuilder();
+        StringBuilder string = new StringBuilder();
+        String substring = s.substring(0, 1);
+        function(result,s.substring(1),str.append(substring),string.append(substring),0);
+        return result;
+    }
+
+    private static void function(List<String> result, String s, StringBuilder str,StringBuilder string,int time) {
+        String str1 = str.toString();
+        if ((str1.startsWith("0")&&str.length()>1)|| Integer.parseInt(str1) > 255){
+            return;
+        }
+        if ("".equals(s) && time == 3){
+            result.add(string.toString());
+            return;
+        }
+        if (time>3 || "".equals(s)){
+            return;
+        }
+        char substring = s.charAt(0);
+        if (substring < '0' || substring > '9'){
+            return;
+        }
+        //加点
+        function(result,s.substring(1),new StringBuilder().append(substring),new StringBuilder().append(string).append(".").append(substring),time+1);
+        //不加点
+        if (str1.length()<3 ){
+            function(result,s.substring(1),str.append(substring),string.append(substring),time);
+        }
+    }
+
+    public static void main(String[] args) {
+        List<String> strings = restoreIpAddresses("25525511135");
+        for (String string : strings) {
+            System.out.println(string);
+        }
     }
 
 }

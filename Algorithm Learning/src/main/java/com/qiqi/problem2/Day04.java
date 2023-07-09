@@ -1,5 +1,6 @@
 package com.qiqi.problem2;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
@@ -386,10 +387,40 @@ public class Day04 {
         }
     }
 
+    public static List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> result = new LinkedList<>();
+        fun(result,nums,0,0,1,new ArrayList<Integer>());
+        ArrayList<Integer> integers = new ArrayList<>();
+        integers.add(0);
+        fun(result,nums,nums[0],1,1,integers);
+        return result;
+    }
+
+    private static void fun(List<List<Integer>> result, int[] nums, int sum ,int time,int index,List<Integer> arr) {
+        if (time == 3 ){
+            if (sum == 0){
+                result.add(arr);
+            }
+            fun(result,nums,0,0,index+1,new ArrayList<Integer>());
+            ArrayList<Integer> integers = new ArrayList<>();
+            integers.add(nums[index]);
+            fun(result,nums,nums[index],1,index+1,integers);
+            return;
+        }
+
+        if (index == nums.length) return;
+        //不选
+        fun(result,nums,sum,time,index+1,new ArrayList<>(arr));
+        //选
+        arr.add(nums[index]);
+        fun(result,nums,sum+nums[index],time+1,index+1,arr);
+
+    }
+
     public static void main(String[] args) {
-        List<String> strings = restoreIpAddresses("25525511135");
-        for (String string : strings) {
-            System.out.println(string);
+        List<List<Integer>> lists = threeSum(new int[]{-1, 0, 1, 2, -1, -4});
+        for (List<Integer> list : lists) {
+            System.out.println(list);
         }
     }
 

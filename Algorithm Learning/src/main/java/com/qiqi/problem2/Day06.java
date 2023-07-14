@@ -58,10 +58,12 @@ public class Day06 {
         arr[i] = arr[index];
         arr[index] = num;
     }
-
-    public static void main(String[] args) {
-        minFallingPathSum(new int[][]{{2,1,3},{6,5,4},{7,8,9}});
+    private static void swap( int[] arr,int i, int index) {
+        int num = arr[i];
+        arr[i] = arr[index];
+        arr[index] = num;
     }
+
 
     //快排
 
@@ -96,6 +98,170 @@ public class Day06 {
             return Math.min(dp[i-1][j],dp[i-1][j-1]);
         }
         return Math.min(dp[i-1][j],Math.min(dp[i-1][j+1],dp[i-1][j-1]));
+    }
+
+
+    public static int[] netherLandsFlag(int[] arr){
+        int left = -1;
+        int right = arr.length-1;
+        int index = 0;
+        int num = arr[arr.length-1];
+        while(index<right){
+            if (arr[index]<num){
+                swap(++left,index++,arr);
+            }else if (arr[index] == num){
+                index++;
+            }else{
+                swap(--right,index,arr);
+            }
+        }
+        swap(right,arr.length-1,arr);
+        return new int[]{left+1,right};
+    }
+
+
+    public static void main(String[] args) {
+        int[] ints = {12, 23, 3, 43, 52, 3, 5634, 6, 34, 5, 45, 46, 4, 67, 785, 53, 23, 4234, 23};
+        quickSort3(ints);
+        for (int anInt : ints) {
+            System.out.print(anInt);
+            System.out.print(" ");
+        }
+
+    }
+    public static void quickSort3(int [] arr){
+        if (arr == null ||arr.length < 2 ) return;
+        process(arr,0,arr.length-1);
+    }
+
+    private static void process(int[] arr, int l, int r) {
+        if (l >= r) return;
+        swap(arr,r,l+(int)(Math.random()*(r-l+1)));
+        int[] M = partation(arr,l,r);
+        process(arr,l,M[0]-1);
+        process(arr,M[1]+1,r);
+    }
+
+    private static int[] partation(int[] arr, int l, int r) {
+        if (arr.length<2 || arr == null) {
+            return new int[]{-1,-1};
+        }
+        if (l == r){
+            return new int[]{l,r};
+        }
+        int min = l-1;
+        int max = r;
+        int index = l;
+        while(index <= max){
+            if (arr[index] == arr[r]){
+                index++;
+            }else if (arr[index] < arr[r]){
+                swap(arr,index++,++min);
+            }else{
+                swap(arr,index,--max);
+            }
+        }
+        swap(arr,max,r);
+
+        return new int[]{min+1,max};
+    }
+
+    public static void  quick3(int [] arr){
+        if (arr.length<2||arr==null){
+            return;
+        }
+        proce2(arr,0,arr.length-1);
+    }
+
+    private static void proce2(int[] arr, int l, int r) {
+        if (l>=r){
+            return;
+        }
+        swap(arr,l+(int)(Math.random()*(r-l+1)),r);
+        int[] M = partition2(arr,l,r);
+        proce2(arr,l,M[0]-1);
+        proce2(arr,M[1]+1,r);
+    }
+    private static int[] partition2(int[] arr, int l, int r) {
+        if (arr.length<2||arr==null){
+            return new int[] {-1,-1};
+        }
+
+        if (l==r){
+            return new int[] {l,r};
+        }
+        int Min = l-1;
+        int Max = r;
+        int index=l;
+        while(index<=Max){
+            if (arr[index] == arr[r]){
+                index++;
+            }else if (arr[index]<arr[r]){
+                swap(arr,index++,++Min);
+            }else{
+                swap(arr,index,--Max);
+            }
+        }
+        swap(arr,Max,r);
+        return new int[] {Min+1,Max};
+    }
+
+    //双检锁
+    public class Singleton{
+        private volatile  Singleton singleton;
+        private  Singleton(){};
+        public  Singleton getSingleton(){
+            if (singleton == null){
+                synchronized (Singleton.class){
+                    if (singleton == null){
+                        singleton = new Singleton();
+                    }
+                }
+            }
+            return singleton;
+        }
+    }
+    public class TreeNode {
+       int val;
+       TreeNode left;
+       TreeNode right;
+       TreeNode() {}
+       TreeNode(int val) { this.val = val; }
+       TreeNode(int val, TreeNode left, TreeNode right) {
+           this.val = val;
+           this.left = left;
+           this.right = right;
+       }
+   }
+    private int ans;
+    public int distributeCoins(TreeNode root) {
+
+        dfs(root);
+
+        return ans;
+
+    }
+
+
+
+    private int[] dfs(TreeNode node) {
+
+        if (node == null)
+
+            return new int[]{0, 0};
+
+        int[] left = dfs(node.left);
+
+        int[] right = dfs(node.right);
+
+        int coins = left[0] + right[0] + node.val; // 子树硬币个数
+
+        int nodes = left[1] + right[1] + 1; // 子树节点数
+
+        ans += Math.abs(coins - nodes);
+
+        return new int[]{coins, nodes};
+
     }
 
 }

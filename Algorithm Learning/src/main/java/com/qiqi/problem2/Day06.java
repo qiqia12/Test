@@ -1,6 +1,8 @@
 package com.qiqi.problem2;
 
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * @projectName: Test
@@ -262,6 +264,47 @@ public class Day06 {
 
         return new int[]{coins, nodes};
 
+    }
+    List<List<Integer>> result = new LinkedList<>();
+    List<String> strList = new LinkedList<>();
+    public List<List<Integer>> fourSum(int[] nums, int target) {
+
+        for (int i = 0; i < nums.length - 3; i++) {
+            List<Integer> integers = new LinkedList<Integer>();
+            integers.add(nums[i]);
+            proc(integers,nums[i],target,i+1,nums);
+        }
+
+        return result;
+    }
+
+    private void proc(List<Integer> lists,int sum, int target,int index,int[] nums) {
+        if (sum == target && lists.size() == 4){
+            lists.sort((a,b)-> a-b);
+            String str = func(lists);
+            if (!strList.contains(str)){
+                result.add(lists);
+                strList.add(str);
+            }
+            return;
+        }
+        if ((lists.size() == 4 && sum!=target) || index == nums.length ){
+            return;
+        }
+        //不选当前数字
+        proc(new LinkedList<>(lists),sum,target,index+1,nums);
+        //选择当前数字
+        lists.add(nums[index]);
+        proc(lists,sum+nums[index],target,index+1,nums);
+
+    }
+
+    private String func(List<Integer> lists) {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Integer list : lists) {
+            stringBuilder.append(list);
+        }
+        return stringBuilder.toString();
     }
 
 }

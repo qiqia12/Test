@@ -1,8 +1,6 @@
 package com.qiqi.problem2;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * @projectName: Test
@@ -122,15 +120,6 @@ public class Day06 {
     }
 
 
-    public static void main(String[] args) {
-        int[] ints = {12, 23, 3, 43, 52, 3, 5634, 6, 34, 5, 45, 46, 4, 67, 785, 53, 23, 4234, 23};
-        quickSort3(ints);
-        for (int anInt : ints) {
-            System.out.print(anInt);
-            System.out.print(" ");
-        }
-
-    }
     public static void quickSort3(int [] arr){
         if (arr == null ||arr.length < 2 ) return;
         process(arr,0,arr.length-1);
@@ -307,4 +296,44 @@ public class Day06 {
         return stringBuilder.toString();
     }
 
+
+    public static int[] sumOfDistancesInTree(int n, int[][] edges) {
+        int[] result = new int[n];
+        ArrayList<Integer>[] lists = new ArrayList[n];
+        for (int i = 0; i < n; i++) {
+            lists[i] = new ArrayList<>();
+        }
+        for (int i = 0; i < edges.length; i++) {
+            int a = edges[i][0];
+            int b = edges[i][1];
+            lists[a].add(b);
+            lists[b].add(a);
+        }
+
+        for (int i = 0; i < n; i++) {
+            HashSet<Integer> set = new HashSet<>();
+            set.add(i);
+            result[i] = function(set,lists,i,0);
+        }
+        return result;
+    }
+
+    private static  int function(HashSet<Integer> set, ArrayList<Integer>[] lists, int index,int deep) {
+        int result = 0;
+        Queue<Integer> queue = new LinkedList<>();
+        for (Integer integer : lists[index]) {
+            if (set.add(integer)){
+                queue.add(integer);
+                result++;
+            }
+        }
+        while(!queue.isEmpty()){
+            result += function(set,lists,queue.poll(),deep+1)+deep;
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        sumOfDistancesInTree(6,new int[][]{{0,1},{0,2},{2,3},{2,4},{2,5}});
+    }
 }

@@ -332,8 +332,35 @@ public class Day06 {
         }
         return result;
     }
+    public static String addStrings(String num1, String num2) {
+        boolean flag = false;
+        int l1 = num1.length()-1;
+        int l2 = num2.length()-1;
+        Stack<Integer> stack = new Stack<>();
+        while(l1>=0 && l2 >=0){
+            int num = num1.charAt(l1--) - '0' + num2.charAt(l2--) - '0';
+            stack.add(((flag?1:0)+num)%10);
+            flag = num/10>0;
+        }
+        while(l1>=0){
+            stack.add(((flag?1:0)+num1.charAt(l1) - '0')%10);
+            flag = (num1.charAt(l1--) - '0')/10>0;
+        }
+        while(l2>=0){
+            stack.add(((flag?1:0)+num2.charAt(l2) - '0')%10);
+            flag = (num2.charAt(l2--) - '0')/10>0;
+        }
+        if (flag){
+            stack.add(1);
+        }
+        StringBuilder sb = new StringBuilder();
+        while(!stack.isEmpty()){
+            sb.append(stack.pop());
+        }
+        return sb.toString();
+    }
 
     public static void main(String[] args) {
-        sumOfDistancesInTree(6,new int[][]{{0,1},{0,2},{2,3},{2,4},{2,5}});
+        System.out.println(addStrings("11", "123"));
     }
 }

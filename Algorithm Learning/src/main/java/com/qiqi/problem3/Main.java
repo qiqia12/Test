@@ -2,23 +2,12 @@ package com.qiqi.problem3;
 
 
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.PriorityQueue;
 import java.util.Scanner;
 
 public class Main {
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int box = sc.nextInt();
-        int goods =sc.nextInt();
-        int[] dp = new int[box+1];
-        dp[1] = goods;
-        for (int i = 2; i <= box; i++) {
-            dp[i] = (goods-1)*dp[i-1];
-        }
-        System.out.println(dp[box]);
-        sc.close();
-    }
 
     public int[] minInterval(int[][] intervals, int[] queries) {
 
@@ -47,6 +36,95 @@ public class Main {
             }
         }
         return ans;
+    }
+    public static int robotSim(int[] commands, int[][] obstacles) {
+        //2 代表向北  1 代表向东 -2 代表南  -1 代表向西
+        int[] position = new int[]{0,0,2};
+        int result = 0;
+        HashSet<String> set = new HashSet<>();
+        for (int[] obstacle : obstacles) {
+            set.add(obstacle[0]+","+obstacle[1]);
+        }
+        for (int command : commands) {
+            position = process(command,set,position);
+            result = Math.max(result,(int)(Math.pow(Math.abs(position[0]),2) + Math.pow(Math.abs(position[1]),2)));
+        }
+        return result;
+    }
+
+    private static int[] process(int command, HashSet<String> set, int[] position) {
+        if (command == -1 || command == -2){
+            position = nextDirection(position,command);
+            return position;
+        }
+        if (position[2] == 1){
+            for (int i = 1; i <= command; i++) {
+                if (set.contains((position[0]+1)+","+position[1])){
+                    return position;
+                }
+                position[0]++;
+            }
+        }else if (position[2] == 2){
+            for (int i = 1; i <= command; i++) {
+                if (set.contains(position[0]+","+(position[1]+1))){
+                    return position;
+                }
+                position[1]++;
+            }
+        }else if (position[2] == -1){
+            for (int i = 1; i <= command; i++) {
+                if (set.contains((position[0]-1)+","+position[1])){
+                    return position;
+                }
+                position[0]--;
+            }
+        }else{
+            for (int i = 1; i <= command; i++) {
+                if (set.contains(position[0]+","+(position[1]-1))){
+                    return position;
+                }
+                position[1]--;
+            }
+        }
+        return position;
+    }
+
+    private static int[] nextDirection(int[] position, int command) {
+        if (command == -1){
+            if (position[2] == 1){
+                position[2] =-2;
+                return position;
+            }
+            else if (position[2] == 2){
+                position[2] =1;
+                return position;
+            }else if (position[2] == -1){
+                position[2] = 2;
+                return position;
+            }else{
+                position[2] = -1;
+                return position;
+            }
+        }else{
+            if (position[2] == 1){
+                position[2] = 2;
+                return position;
+            }
+            else if (position[2] == 2){
+                position[2] = -1;
+                return position;
+            }else if (position[2] == -1){
+                position[2] = -2;
+                return position;
+            }else{
+                position[2] = 1;
+                return position;
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        System.out.println(robotSim(new int[]{4,-1,4,-2,4}, new int[][]{{2,4}}));
     }
 
 }

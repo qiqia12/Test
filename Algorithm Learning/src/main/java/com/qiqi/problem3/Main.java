@@ -1,10 +1,7 @@
 package com.qiqi.problem3;
 
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.PriorityQueue;
-import java.util.Scanner;
+import java.util.*;
 
 public class Main {
 
@@ -139,6 +136,34 @@ public class Main {
 
     public static void main(String[] args) {
         System.out.println(robotSim(new int[]{4,-1,4,-2,4}, new int[][]{{2,4}}));
+    }
+
+    public int findMaxValueOfEquation(int[][] points, int k) {
+        int ans = Integer.MIN_VALUE;
+
+        ArrayDeque<int[]> q = new ArrayDeque<int[]>();
+
+        for (int[] p : points) {
+
+            int x = p[0], y = p[1];
+
+            while (!q.isEmpty() && q.peekFirst()[0] < x - k) // 队首超出范围
+
+                q.pollFirst(); // 弹它！
+
+            if (!q.isEmpty())
+
+                ans = Math.max(ans, x + y + q.peekFirst()[1]); // 加上最大的 yi-xi
+
+            while (!q.isEmpty() && q.peekLast()[1] <= y - x) // 队尾不如新来的强
+
+                q.pollLast(); // 弹它！
+
+            q.addLast(new int[]{x, y - x});
+
+        }
+
+        return ans;
     }
 
 }

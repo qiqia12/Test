@@ -166,4 +166,22 @@ public class Main {
         return ans;
     }
 
+    public int thirdMax(int[] nums) {
+        PriorityQueue<Integer> queue = new PriorityQueue<>(3);
+        HashSet<Integer> set = new HashSet<>();
+        int max = Integer.MIN_VALUE;
+        for (int num : nums) {
+            max = Math.max(max,num);
+            if(queue.size()<3 && !set.contains(num)){
+                queue.add(num);
+                set.add(num);
+            }else if (queue.size()==3 && num > queue.peek() && !set.contains(num)){
+                queue.poll();
+                queue.add(num);
+                set.add(num);
+            }
+        }
+        return queue.size()==3?queue.peek():max;
+    }
+
 }

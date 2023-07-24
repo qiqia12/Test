@@ -183,5 +183,17 @@ public class Main {
         }
         return queue.size()==3?queue.peek():max;
     }
+    public int numJewelsInStones(String jewels, String stones) {
+        HashSet<Character> set = new HashSet<>();
+        char[] chars = jewels.toCharArray();
+        for (char aChar : chars) {
+            set.add(aChar);
+        }
+        int result = 0;
+        for (char c : stones.toCharArray()) {
+            if (set.contains(c)) result++;
+        }
+        return result;
+    }
 
 }

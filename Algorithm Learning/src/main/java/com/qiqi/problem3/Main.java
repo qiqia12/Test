@@ -1,7 +1,11 @@
 package com.qiqi.problem3;
 
 
+import sun.text.resources.sr.FormatData_sr_Latn;
+
+import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -192,6 +196,28 @@ public class Main {
         int result = 0;
         for (char c : stones.toCharArray()) {
             if (set.contains(c)) result++;
+        }
+        return result;
+    }
+    public int halveArray(int[] nums) {
+        float sum = Arrays.stream(nums).sum();
+        PriorityQueue<Float> queue = new PriorityQueue<Float>(new Comparator<Float>() {
+            @Override
+            public int compare(Float o1, Float o2) {
+                return (int) (o2-o1);
+            }
+        });
+        for (int num : nums) {
+            queue.add((float)num);
+        }
+        float now = sum;
+        int result = 0;
+        while(now > sum/2){
+            result++;
+            float cur = queue.poll();
+            cur/=2;
+            now -= cur;
+            queue.add(cur);
         }
         return result;
     }

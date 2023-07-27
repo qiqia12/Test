@@ -138,9 +138,6 @@ public class Main {
         return maxSum > 0 ? Math.max(maxSum, total - minSum) : maxSum;
     }
 
-    public static void main(String[] args) {
-        System.out.println(robotSim(new int[]{4,-1,4,-2,4}, new int[][]{{2,4}}));
-    }
 
     public int findMaxValueOfEquation(int[][] points, int k) {
         int ans = Integer.MIN_VALUE;
@@ -221,5 +218,65 @@ public class Main {
         }
         return result;
     }
+    public static  long[] handleQuery(int[] nums1, int[] nums2, int[][] queries) {
+        long[] nums11 = new long[nums1.length];
+        for (int i = 0; i < nums1.length; i++) {
+            nums11[i] = nums1[i];
+        }
+        long[] nums22 = new long[nums2.length];
+        for (int i = 0; i < nums2.length; i++) {
+            nums22[i] = nums2[i];
+        }
+        List<Long> list = new ArrayList<>();
+        for (int[] query : queries) {
+            if (query[0] ==3){
+                list.add(Arrays.stream(nums22).sum());
+            }else if (query[0] ==1){
+                reverse(nums11,query[1],query[2]);
+            }else{
+                proce(nums22,nums11,query[1]);
+            }
+        }
+        long[] result = new long[list.size()];
+        for (int i = 0; i < list.size(); i++) {
+            result[i] = list.get(i);
+        }
+        return result;
+    }
 
+    private static void proce(long[] nums2, long[] nums1, int i) {
+        for (int j = 0; j < nums2.length; j++) {
+            nums2[j] += nums1[j] *i;
+        }
+    }
+
+    private static void reverse(long[] nums1, int left, int right) {
+        while(left<=right){
+            if (nums1[left] == 0){
+                nums1[left++] =1;
+            }else if (nums1[left] ==1){
+                nums1[left++] =0;
+            }else{
+                left++;
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        handleQuery(new int[]{1,0,1},new int[]{0,0,0},new int[][]{{1,1,1},{2,1,0},{3,0,0}});
+    }
+    public int deleteGreatestValue(int[][] grid) {
+        for (int[] ints : grid) {
+            Arrays.sort(ints);
+        }
+        int result = 0;
+        for (int i = grid[0].length-1; i >= 0 ; i--) {
+            int max =0;
+            for (int j = 0; j < grid.length; j++) {
+                max = Math.max(max,grid[j][i]);
+            }
+            result+=max;
+        }
+        return result;
+    }
 }

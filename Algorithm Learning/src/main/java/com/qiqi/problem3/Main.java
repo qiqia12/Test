@@ -352,6 +352,30 @@ public class Main {
         }
         return head;
     }
+    public void reorderList(ListNode head) {
+        if(head == null || head.next == null)
+            return;
+        ListNode slow = head;
+        ListNode fast = head;
+        while( fast.next!=null && fast.next.next != null){
+            slow = slow.next;
+            fast = fast.next.next;
+        }
+        ListNode cur = slow.next;
+        slow.next = null;
+        Stack<ListNode> stack = new Stack<>();
+        while(cur!=null){
+            stack.add(cur);
+            cur = cur.next;
+        }
+        ListNode h = head;
+        while(!stack.isEmpty()){
+            ListNode pop = stack.pop();
+            pop.next = h.next;
+            h.next = pop;
+            h = pop.next;
+        }
+    }
 
 
 }

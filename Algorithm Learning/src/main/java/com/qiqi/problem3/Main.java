@@ -387,6 +387,24 @@ public class Main {
         }
         return (int) ans;
     }
+    public int flipgame(int[] fronts, int[] backs) {
+        int result = Integer.MAX_VALUE;
+        HashSet<Integer> set = new HashSet<>();
+        for (int i = 0; i < fronts.length; i++) {
+            if (fronts[i] == backs[i] ){
+                set.add(fronts[i]);
+            }
+        }
+        for (int front : fronts) {
+            if (!set.contains(front))
+                result = Math.min(result,front);
+        }
+        for (int back : backs) {
+            if (set.contains(back))
+                result = Math.min(result,back);
+        }
+        return result == Integer.MAX_VALUE?0:result;
+    }
 
 
 }

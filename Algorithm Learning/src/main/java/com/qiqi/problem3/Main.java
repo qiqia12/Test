@@ -460,6 +460,35 @@ public class Main {
         grid[x][y] = 0; // 恢复现场
         return ans;
     }
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        if (list1 == null) return list2;
+        if (list2 == null) return list1;
+        ListNode head = list1.val < list2.val? list1:list2;
+        if (head == list1) list1 = list1.next;
+        if (head == list2) list2 = list2.next;
+        head.next = null;
+        ListNode next = head;
+        while(list1!=null && list2 != null){
+            if (list1.val < list2.val){
+                next.next = list1;
+                list1 = list1.next;
+                next = next.next;
+                next.next = null;
+            }else{
+                next.next = list2;
+                list2 = list2.next;
+                next = next.next;
+                next.next = null;
+            }
+        }
+        if (list1 != null){
+            next.next = list1;
+        }
+        if (list2 != null){
+            next.next = list2;
+        }
+        return head;
+    }
 
 
 

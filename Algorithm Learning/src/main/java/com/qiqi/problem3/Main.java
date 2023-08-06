@@ -489,6 +489,24 @@ public class Main {
         }
         return head;
     }
+    public ListNode swapPairs(ListNode head) {
+        if (head == null || head.next == null) return head;
+        ListNode H = head.next;
+        ListNode next = H.next;
+        H.next = head;
+        head.next = next;
+        ListNode preHead = head;
+        while(next!=null && next.next!=null){
+            head = next;
+            ListNode curHead = next.next;
+            next = curHead.next;
+            preHead.next = curHead;
+            curHead.next = head;
+            head.next = next;
+            preHead = head;
+        }
+        return H;
+    }
 
 
 

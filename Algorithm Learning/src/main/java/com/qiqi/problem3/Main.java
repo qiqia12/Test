@@ -262,9 +262,7 @@ public class Main {
         }
     }
 
-    public static void main(String[] args) {
-        handleQuery(new int[]{1,0,1},new int[]{0,0,0},new int[][]{{1,1,1},{2,1,0},{3,0,0}});
-    }
+
     public int deleteGreatestValue(int[][] grid) {
         for (int[] ints : grid) {
             Arrays.sort(ints);
@@ -508,6 +506,23 @@ public class Main {
         return H;
     }
 
+    public static int maxAbsoluteSum(int[] nums) {
+        int length = nums.length;
+        int[] pro = new int[length+1];
+        for (int i = 1; i <= length; i++) {
+            pro[i] = pro[i-1] + nums[i-1];
+        }
+        int result = Integer.MIN_VALUE;
+        for (int i = 0; i <= length; i++) {
+            for (int j = i+1; j <= length; j++) {
+                result = Math.max(result,Math.abs(pro[j] - pro[i]));
+            }
+        }
+        return result;
+    }
+    public static void main(String[] args) {
+        maxAbsoluteSum(new int[]{1,-3,2,3,-4});
+    }
 
 
 }

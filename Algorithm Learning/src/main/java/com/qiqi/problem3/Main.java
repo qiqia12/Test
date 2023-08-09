@@ -523,6 +523,16 @@ public class Main {
     public static void main(String[] args) {
         maxAbsoluteSum(new int[]{1,-3,2,3,-4});
     }
-
+    public int subtractProductAndSum(int n) {
+        int he = 0;
+        int ji = 1;
+        while(n>0){
+            int num = n%10;
+            he += num;
+            ji *= num;
+            n /= 10;
+        }
+        return ji - he;
+    }
 
 }
